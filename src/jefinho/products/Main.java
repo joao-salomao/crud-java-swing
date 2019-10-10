@@ -10,6 +10,7 @@ import java.util.Scanner;
 import jefinho.products.dao.ProductDAO;
 import jefinho.products.models.Product;
 import view.product.Edit;
+import view.product.List;
 
 /**
  *
@@ -26,7 +27,7 @@ public class Main {
         list.forEach(p -> {
             System.out.println(p.getDescription());
         });
-        Edit a = new Edit(list, -1);
+        List a = new List(list);
         a.setVisible(true);
     }
     

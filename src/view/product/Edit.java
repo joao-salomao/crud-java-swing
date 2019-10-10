@@ -18,6 +18,8 @@ import jefinho.products.models.Product;
 public class Edit extends javax.swing.JFrame {
     private ArrayList<Product> products;
     private Product product;
+    
+    public boolean revalidate = false;
     /**
      * Creates new form Edit
      * @param products
@@ -33,6 +35,7 @@ public class Edit extends javax.swing.JFrame {
             this.nameField.setText(this.product.getDescription());
             this.codeField.setText(this.product.getCode());
         } else {
+            this.delete.setVisible(false);
             this.formLabel.setText("Cadastrar Novo Produto");
         }
     }
@@ -47,6 +50,7 @@ public class Edit extends javax.swing.JFrame {
         if (result) {
             this.product = p;
             this.products.add(this.product);
+            this.delete.setVisible(true);
         }
         return result;
     }
@@ -119,7 +123,7 @@ public class Edit extends javax.swing.JFrame {
         delete = new javax.swing.JButton();
         leave = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         formLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         formLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -214,11 +218,22 @@ public class Edit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
+        this.revalidate = true;
         this.onSave();
     }//GEN-LAST:event_saveActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
+        boolean result = ProductDAO.delete(this.product);
+        if (result) {
+            String message = "O produto "+this.product.getDescription()+" foi deletado com sucesso.";
+            JOptionPane.showMessageDialog (this, message);
+            this.products.remove(this.product);
+            this.dispose();
+        } else {
+            String message = "Algo deu errado, tente novamente";
+            JOptionPane.showMessageDialog (this, message);
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void leaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveActionPerformed

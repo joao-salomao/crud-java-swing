@@ -58,17 +58,19 @@ public class ProductDAO {
         return false;
     }
     
-    public static void delete(Product p) {
+    public static boolean delete(Product p) {
         try {
             String sql = "DELETE FROM products WHERE id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             
-            st.setLong(1, p.getId());
+            st.setInt(1, p.getId());
             
             st.executeUpdate();
+            return true;
         } catch(SQLException e) {
             System.out.println(e);
         }
+        return false;
     }
     
     public static Product show(int id) {
