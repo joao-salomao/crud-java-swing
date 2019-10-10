@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "aula0210",
+            "dialect": "MySQL",
+            "isActive": false,
+            "isConnected": false,
+            "name": "MySQL",
+            "password": "root",
+            "port": 3306,
+            "server": "localhost",
+            "username": "mysql"
+        }
+    ]
+}
