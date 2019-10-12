@@ -8,8 +8,6 @@ package view.product;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import jefinho.products.models.Product;
 
 /**
@@ -19,14 +17,14 @@ import jefinho.products.models.Product;
 public class ProductItem extends javax.swing.JPanel {
     ArrayList<Product> products;
     Product product;
-    List list;
+    ListPanel list;
     /**
      * Creates new form ProductItem
      * @param products
      * @param product
      * @param list
      */
-    public ProductItem(ArrayList<Product> products, Product product, List list) {
+    public ProductItem(ArrayList<Product> products, Product product, ListPanel list) {
         this.product = product;
         this.products = products;
         this.list = list;
@@ -97,18 +95,8 @@ public class ProductItem extends javax.swing.JPanel {
         // TODO add your handling code here:
         System.out.println("aqiiiiiii");
         int index = this.products.indexOf(this.product);
-        Edit edit = new Edit(this.products, index);
+        Edit edit = new Edit(this.products, index, list);
         edit.setVisible(true);
-        
-        edit.addWindowListener(new WindowAdapter() {
-            @Override
-            public void  windowClosed(WindowEvent e) {
-                JOptionPane.showMessageDialog(null, "Fechou atela "+edit.revalidate);
-                list.refresh();
-                
-            }
-        });
-        
     }//GEN-LAST:event_editActionPerformed
 
 

@@ -5,44 +5,65 @@
  */
 package view.product;
 
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
 import jefinho.products.models.Product;
 
 /**
  *
  * @author João Salomão
  */
-public class List extends javax.swing.JFrame {
+public class ListPanel extends javax.swing.JPanel {
     ArrayList<Product> products;
     ArrayList<ProductItem> productItems;
     /**
-     * Creates new form List
+     * Creates new form ListPanel
      * @param products
      */
-    public List(ArrayList<Product> products) {
+    public ListPanel (ArrayList<Product> products) {
         this.productItems = new ArrayList<>();
         this.products = products;
+        
         initComponents();
         
-        this.setLayout(new GridLayout(this.products.size(), 1));
-        
-        this.addProductItem();
+        this.addComponents();
     }
     
     public void refresh() {
-        this.removeAll();
         this.productItems = new ArrayList<>();
-        this.addProductItem();
+        this.removeAll();
+        this.addComponents();
+        this.repaint();
+        this.revalidate();
     };
     
-    public void addProductItem() {
+    private void addComponents() {
+        this.addProductItem();
+        this.addCreateNewProductButton();
+    }
+    
+    private void addProductItem() {
         this.products.forEach(p -> {
             ProductItem pi;
             pi = new ProductItem(products, p, this);
             this.productItems.add(pi);
             this.add(pi);
         });
+        System.out.println("Adding ProductItem");
+    }
+    
+    private void addCreateNewProductButton() {
+        JButton newButton = new JButton("Cadastrar");
+        newButton.addActionListener((ActionEvent e) -> { 
+            new Edit(this.products, -1, this);
+        });
+        this.add(newButton);
+        System.out.println("Adding New Product button");
     }
 
     /**
@@ -54,21 +75,10 @@ public class List extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 462, Short.MAX_VALUE)
-        );
-
-        pack();
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
     }// </editor-fold>//GEN-END:initComponents
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

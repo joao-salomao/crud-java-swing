@@ -6,11 +6,12 @@
 package jefinho.products;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import jefinho.products.dao.ProductDAO;
 import jefinho.products.models.Product;
-import view.product.Edit;
-import view.product.List;
+import view.product.ListPanel;
 
 /**
  *
@@ -27,8 +28,16 @@ public class Main {
         list.forEach(p -> {
             System.out.println(p.getDescription());
         });
-        List a = new List(list);
-        a.setVisible(true);
+        
+        ListPanel listPanel = new ListPanel(list);
+        
+        JScrollPane scroller = new JScrollPane(listPanel);
+        
+        JFrame frame = new JFrame("Jefinho Produtos");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(listPanel);
+        frame.setSize(500, 600);
+        frame.setVisible(true);
     }
     
 }

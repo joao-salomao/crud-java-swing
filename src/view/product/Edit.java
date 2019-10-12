@@ -5,6 +5,7 @@
  */
 package view.product;
 
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import jefinho.products.dao.ProductDAO;
@@ -18,26 +19,29 @@ import jefinho.products.models.Product;
 public class Edit extends javax.swing.JFrame {
     private ArrayList<Product> products;
     private Product product;
-    
-    public boolean revalidate = false;
+    private final ListPanel list;
     /**
      * Creates new form Edit
      * @param products
      * @param index
+     * @param list
      */
-    public Edit(ArrayList<Product> products, int index) {
+    public Edit(ArrayList<Product> products, int index, ListPanel list) {
         initComponents();
         
+        this.list = list;
         this.products = products;
         if (!(index == -1)) {
             this.product = products.get(index);
             this.formLabel.setText("Editar Produto");
             this.nameField.setText(this.product.getDescription());
             this.codeField.setText(this.product.getCode());
+            this.save.setText("Atualizar");
         } else {
             this.delete.setVisible(false);
             this.formLabel.setText("Cadastrar Novo Produto");
         }
+        this.setVisible(true);
     }
     
     private boolean createProduct() {
@@ -51,6 +55,7 @@ public class Edit extends javax.swing.JFrame {
             this.product = p;
             this.products.add(this.product);
             this.delete.setVisible(true);
+            this.save.setText("Atualizar");
         }
         return result;
     }
@@ -58,6 +63,7 @@ public class Edit extends javax.swing.JFrame {
     private boolean updateProduct() {
         String description = this.nameField.getText();
         String code = this.codeField.getText();
+        
         this.product.setCode(code);
         this.product.setDescription(description);
         
@@ -89,15 +95,17 @@ public class Edit extends javax.swing.JFrame {
         }
         
         boolean result;
+        String successMessage;
         if(this.product == null) {
             result = this.createProduct();
+            successMessage = "O produto "+this.product.getDescription()+" foi cadastrado com sucesso";
         } else {
+            successMessage = "O produto "+this.product.getDescription()+" foi atualizado com sucesso";
             result = this.updateProduct();
         }
         
         if (result) {
-            String message = "O produto "+this.product.getDescription()+" foi cadastrado com sucesso";
-            JOptionPane.showMessageDialog (this, message);
+            JOptionPane.showMessageDialog (this, successMessage);
         } else {
             String message = "Algo deu errado, tente novamente";
             JOptionPane.showMessageDialog (this, message);
@@ -124,6 +132,11 @@ public class Edit extends javax.swing.JFrame {
         leave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         formLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         formLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -218,8 +231,8 @@ public class Edit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        this.revalidate = true;
         this.onSave();
+        this.list.refresh();
     }//GEN-LAST:event_saveActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
@@ -234,12 +247,19 @@ public class Edit extends javax.swing.JFrame {
             String message = "Algo deu errado, tente novamente";
             JOptionPane.showMessageDialog (this, message);
         }
+        this.list.refresh();
     }//GEN-LAST:event_deleteActionPerformed
 
     private void leaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_leaveActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        System.out.println("Fechando janela");
+        this.list.refresh();
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField codeField;
