@@ -33,7 +33,7 @@ public class ListPanel extends javax.swing.JPanel {
         
         this.addComponents();
     }
-    
+
     public void refresh() {
         this.productItems = new ArrayList<>();
         this.removeAll();
@@ -60,7 +60,7 @@ public class ListPanel extends javax.swing.JPanel {
     private void addCreateNewProductButton() {
         JButton newButton = new JButton("Cadastrar");
         newButton.addActionListener((ActionEvent e) -> { 
-            new Edit(this.products, -1, this);
+            new EditFrame(this.products, -1, this);
         });
         this.add(newButton);
         System.out.println("Adding New Product button");

@@ -95,7 +95,7 @@ public class ProductItem extends javax.swing.JPanel {
         // TODO add your handling code here:
         System.out.println("aqiiiiiii");
         int index = this.products.indexOf(this.product);
-        Edit edit = new Edit(this.products, index, list);
+        EditFrame edit = new EditFrame(this.products, index, list);
         edit.setVisible(true);
     }//GEN-LAST:event_editActionPerformed
 
