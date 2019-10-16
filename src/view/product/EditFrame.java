@@ -19,17 +19,17 @@ import jefinho.products.models.Product;
 public class EditFrame extends javax.swing.JFrame {
     private ArrayList<Product> products;
     private Product product;
-    private final ListPanel list;
+    private final ListTable table;
     /**
      * Creates new form Edit
      * @param products
      * @param index
-     * @param list
+     * @param table
      */
-    public EditFrame(ArrayList<Product> products, int index, ListPanel list) {
+    public EditFrame(ArrayList<Product> products, int index, ListTable table) {
         initComponents();
         
-        this.list = list;
+        this.table = table;
         this.products = products;
         if (!(index == -1)) {
             this.product = products.get(index);
@@ -54,6 +54,7 @@ public class EditFrame extends javax.swing.JFrame {
         if (result) {
             this.product = p;
             this.products.add(this.product);
+            this.table.addProduct(p);
             this.delete.setVisible(true);
             this.save.setText("Atualizar");
         }
@@ -234,7 +235,6 @@ public class EditFrame extends javax.swing.JFrame {
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         this.onSave();
-        this.list.refresh();
     }//GEN-LAST:event_saveActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
@@ -249,7 +249,6 @@ public class EditFrame extends javax.swing.JFrame {
             String message = "Algo deu errado, tente novamente";
             JOptionPane.showMessageDialog (this, message);
         }
-        this.list.refresh();
     }//GEN-LAST:event_deleteActionPerformed
 
     private void leaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveActionPerformed
@@ -260,7 +259,6 @@ public class EditFrame extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         System.out.println("Fechando janela");
-        this.list.refresh();
     }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
