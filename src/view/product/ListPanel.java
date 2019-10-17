@@ -9,9 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
 import jefinho.products.models.Product;
 
 /**

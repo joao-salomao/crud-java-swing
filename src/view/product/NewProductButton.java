@@ -18,7 +18,7 @@ public class NewProductButton extends javax.swing.JButton {
     private ListTable listTable;
     
     public NewProductButton(ListTable listTable) {
-        super("Novo produto");
+        super("Cadastrar");
         this.listTable = listTable;
         this.addActionListener(new InsertListener(this.listTable));
     }

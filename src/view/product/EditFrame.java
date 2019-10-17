@@ -5,7 +5,6 @@
  */
 package view.product;
 
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import jefinho.products.dao.ProductDAO;
@@ -20,6 +19,7 @@ public class EditFrame extends javax.swing.JFrame {
     private ArrayList<Product> products;
     private Product product;
     private final ListTable table;
+    private final int index;
     /**
      * Creates new form Edit
      * @param products
@@ -31,6 +31,8 @@ public class EditFrame extends javax.swing.JFrame {
         
         this.table = table;
         this.products = products;
+        this.index = index;
+        
         if (!(index == -1)) {
             this.product = products.get(index);
             this.formLabel.setText("Editar Produto");
@@ -244,6 +246,7 @@ public class EditFrame extends javax.swing.JFrame {
             String message = "O produto "+this.product.getDescription()+" foi deletado com sucesso.";
             JOptionPane.showMessageDialog (this, message);
             this.products.remove(this.product);
+            this.table.removeProduct(this.index);
             this.dispose();
         } else {
             String message = "Algo deu errado, tente novamente";

@@ -27,16 +27,16 @@ public class ListTable extends javax.swing.JFrame {
     private JTable tabela;
     private JScrollPane barraRolagem;
     private NewProductButton btInserir;
-    private JButton btExcluir;
-    private JButton btEditar;
+    private DeleteProductButton btExcluir;
+    private EditProductButton btEditar;
     private DefaultTableModel modelo = new DefaultTableModel();
     private  ArrayList<Product> products;
     
     
     public void criaJanela() {
         btInserir = new NewProductButton(this);
-        btExcluir = new JButton("Excluir");
-        btEditar = new JButton("Editar");
+        btExcluir = new DeleteProductButton(this);
+        btEditar = new EditProductButton(this);
         painelBotoes = new JPanel();
         barraRolagem = new JScrollPane(tabela);
         painelFundo = new JPanel();
@@ -51,9 +51,6 @@ public class ListTable extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 320);
         setVisible(true);
-        btInserir.addActionListener(new BtInserirListener(this));
-        btEditar.addActionListener(new BtEditarListener());
-        btExcluir.addActionListener(new BtExcluirListener());
     }
  
     private void criaJTable() {
@@ -74,7 +71,6 @@ public class ListTable extends javax.swing.JFrame {
  
     public void pesquisar(DefaultTableModel modelo) {
         modelo.setNumRows(0);
- 
         this.products.forEach((p) -> {
             modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription()});
         });
@@ -84,64 +80,18 @@ public class ListTable extends javax.swing.JFrame {
         return this.products;
     }
     
+    public JTable getTable() {
+        return this.tabela;
+    }
  
     public void addProduct(Product p) {
         this.modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription()});
     }
     
-    private class BtInserirListener implements ActionListener {
-        private ListTable listTable;
-        
-        public BtInserirListener(ListTable listTable) {
-            this.listTable = listTable;
-        }
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Insert listener");
-            new EditFrame(listTable.getProducts(), -1, listTable);
-            
-//            InserirContato ic = new InserirContato(modelo);
-//            ic.setVisible(true);
-        }
+    public void removeProduct(int index) {
+        this.modelo.removeRow(index);
     }
- 
-    private class BtEditarListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Edit listener");
-//            int linhaSelecionada = -1;
-//            linhaSelecionada = tabela.getSelectedRow();
-//            if (linhaSelecionada >= 0) {
-//                int idContato = (int) tabela
-//                .getValueAt(linhaSelecionada, 0);
-//                AtualizarContato ic = 
-//                new AtualizarContato(modelo, idContato, linhaSelecionada);
-//                ic.setVisible(true);
-//            } else {
-//                JOptionPane.showMessageDialog(null, 
-//                "É necesário selecionar uma linha.");
-//            }
-        }
-    }
- 
-    private class BtExcluirListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Delete listener");
-//            int linhaSelecionada = -1;
-//            linhaSelecionada = tabela.getSelectedRow();
-//            if (linhaSelecionada >= 0) {
-//                int idContato = (int) 
-//                tabela.getValueAt(linhaSelecionada, 0);
-//                ContatoDao dao = new ContatoDao();
-//                dao.remover(idContato);
-//                modelo.removeRow(linhaSelecionada);
-//            } else {
-//                JOptionPane.showMessageDialog(null, 
-//                "É necesário selecionar uma linha.");
-//            }
-        }
-    }
+    
     /**
      * Creates new form ListTable
      */
