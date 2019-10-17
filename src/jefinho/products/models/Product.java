@@ -10,9 +10,27 @@ package jefinho.products.models;
  * @author João Salomão
  */
 public class Product {
-    int id;
-    String code;
-    String description;
+    private int id;
+    private String code;
+    private String description;
+    private double price;
+    private boolean state;
+    
+    public Product(int id, String code, String description, double price, boolean state) {
+        this.id = id;
+        this.code = code;
+        this.description = description;
+        this.price = price;
+        this.state = state;
+    }
+    
+    public Product(String code, String description, double price, boolean state) {
+        this.id = id;
+        this.code = code;
+        this.description = description;
+        this.price = price;
+        this.state = state;
+    }
     
     public Product(int id, String code, String description) {
         this.id = id;
@@ -27,6 +45,22 @@ public class Product {
 
     public int getId() {
         return id;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean getState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
     }
 
     public void setId(int id) {

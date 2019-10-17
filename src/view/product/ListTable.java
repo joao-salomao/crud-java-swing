@@ -55,9 +55,11 @@ public class ListTable extends javax.swing.JFrame {
  
     private void criaJTable() {
         tabela = new JTable(modelo);
-        modelo.addColumn("Id");
-        modelo.addColumn("Code");
-        modelo.addColumn("Description");
+        modelo.addColumn("ID");
+        modelo.addColumn("CÓDIGO");
+        modelo.addColumn("DESCRIÇÃO");
+        modelo.addColumn("PREÇO");
+        modelo.addColumn("ESTADO");
         tabela.getColumnModel().getColumn(0)
         .setPreferredWidth(10);
         tabela.getColumnModel().getColumn(1)
@@ -72,7 +74,7 @@ public class ListTable extends javax.swing.JFrame {
     public void pesquisar(DefaultTableModel modelo) {
         modelo.setNumRows(0);
         this.products.forEach((p) -> {
-            modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription()});
+            modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription(), p.getPrice(), p.getState()});
         });
     }
     
@@ -85,7 +87,18 @@ public class ListTable extends javax.swing.JFrame {
     }
  
     public void addProduct(Product p) {
-        this.modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription()});
+        this.modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription(), p.getPrice(), p.getState()});
+    }
+    
+    public void updateRow(Product p, int index) {
+        // Update code value
+        this.modelo.setValueAt(p.getCode(),index, 1);
+        // Update description value
+        this.modelo.setValueAt(p.getDescription(),index, 2);
+        // Update price
+        this.modelo.setValueAt(p.getPrice(),index, 3);
+        // Update state
+        this.modelo.setValueAt(p.getState(),index, 4);
     }
     
     public void removeProduct(int index) {

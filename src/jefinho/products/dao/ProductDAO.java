@@ -21,12 +21,14 @@ public class ProductDAO {
 
     public static boolean add(Product p) {
         try {
-            String sql = "INSERT INTO products(code, description) VALUES(?, ?)";
+            String sql = "INSERT INTO products(code, description, price, state) VALUES(?, ?, ?, ?)";
             String returnColunm[] = {"id"};
             
             PreparedStatement st = con.prepareStatement(sql, returnColunm);
             st.setString(1, p.getCode());
             st.setString(2, p.getDescription());
+            st.setDouble(3, p.getPrice());
+            st.setBoolean(4, p.getState());
             st.executeUpdate();
             
             ResultSet rs;
@@ -83,8 +85,10 @@ public class ProductDAO {
             
             String code = rs.getString("code");
             String description = rs.getString("description");
+            double price = rs.getDouble("price");
+            boolean state = rs.getBoolean("state");
             
-            return new Product(id, code, description);
+            return new Product(id, code, description, price, state);
   
         } catch(SQLException e) {
             System.out.println(e);
@@ -102,10 +106,14 @@ public class ProductDAO {
             
             while(rs.next()) {
                 Product p;
+                
                 int id = rs.getInt("id");
                 String code = rs.getString("code");
                 String description = rs.getString("description");
-                p = new Product(id, code, description);
+                double price = rs.getDouble("price");
+                boolean state = rs.getBoolean("state");
+
+                p = new Product(id, code, description, price, state);
                 products.add(p);
             }   
             

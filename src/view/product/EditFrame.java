@@ -5,6 +5,8 @@
  */
 package view.product;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import jefinho.products.dao.ProductDAO;
@@ -19,7 +21,7 @@ public class EditFrame extends javax.swing.JFrame {
     private ArrayList<Product> products;
     private Product product;
     private final ListTable table;
-    private final int index;
+    private int index;
     /**
      * Creates new form Edit
      * @param products
@@ -28,6 +30,8 @@ public class EditFrame extends javax.swing.JFrame {
      */
     public EditFrame(ArrayList<Product> products, int index, ListTable table) {
         initComponents();
+        
+        this.setItemListenerToggleButton();
         
         this.table = table;
         this.products = products;
@@ -49,7 +53,10 @@ public class EditFrame extends javax.swing.JFrame {
     private boolean createProduct() {
         String description = this.nameField.getText();
         String code = this.codeField.getText();
-        Product p = new Product(description, code);
+        double price = Double.parseDouble(this.priceField.getText());
+        boolean state = this.stateButton.getText().equalsIgnoreCase("Ativo");
+        
+        Product p = new Product(description, code, price, state);
 
         boolean result = ProductDAO.add(p);
 
@@ -66,9 +73,13 @@ public class EditFrame extends javax.swing.JFrame {
     private boolean updateProduct() {
         String description = this.nameField.getText();
         String code = this.codeField.getText();
+        double price = Double.parseDouble(this.priceField.getText());
+        boolean state = this.stateButton.getText().equalsIgnoreCase("Ativo");
         
         this.product.setCode(code);
         this.product.setDescription(description);
+        this.product.setPrice(price);
+        this.product.setState(state);
         
         boolean result = ProductDAO.update(product);
         
@@ -103,9 +114,11 @@ public class EditFrame extends javax.swing.JFrame {
             result = this.createProduct();
             if (this.product != null) {
                 successMessage = "O produto "+this.product.getDescription()+" foi cadastrado com sucesso";
+                this.index = this.products.size() - 1;
             }
         } else {
             result = this.updateProduct();
+            this.table.updateRow(this.product, this.index);
             successMessage = "O produto "+this.product.getDescription()+" foi atualizado com sucesso";
         }
         
@@ -115,6 +128,16 @@ public class EditFrame extends javax.swing.JFrame {
             String message = "Algo deu errado, tente novamente";
             JOptionPane.showMessageDialog (this, message);
         }
+    }
+    
+    private void setItemListenerToggleButton() {
+        this.stateButton.addItemListener((ItemEvent ev) -> {
+            if(ev.getStateChange()==ItemEvent.SELECTED){
+                stateButton.setText("Ativo");
+            } else if(ev.getStateChange()==ItemEvent.DESELECTED){
+                stateButton.setText("Desativado");
+            }
+        });
     }
     
 
@@ -127,6 +150,7 @@ public class EditFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField2 = new javax.swing.JTextField();
         formLabel = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
@@ -135,6 +159,12 @@ public class EditFrame extends javax.swing.JFrame {
         save = new javax.swing.JButton();
         delete = new javax.swing.JButton();
         leave = new javax.swing.JButton();
+        priceField = new javax.swing.JTextField();
+        priceLabel = new javax.swing.JLabel();
+        stateButton = new javax.swing.JToggleButton();
+        stateLabel = new javax.swing.JLabel();
+
+        jTextField2.setText("jTextField2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -182,6 +212,22 @@ public class EditFrame extends javax.swing.JFrame {
             }
         });
 
+        priceField.setText("0");
+
+        priceLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        priceLabel.setText("Preço");
+
+        stateButton.setSelected(true);
+        stateButton.setText("Ativo");
+        stateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stateButtonActionPerformed(evt);
+            }
+        });
+
+        stateLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        stateLabel.setText("Estado");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -193,21 +239,30 @@ public class EditFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(codeLabel)
-                                    .addComponent(codeField)))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(8, 8, 8)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(nameLabel)
                                     .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(codeField)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(codeLabel)
+                                            .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(priceLabel))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(leave)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(delete)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(save)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(delete)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(save))
+                                    .addComponent(stateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(stateLabel))))
                         .addGap(0, 14, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -224,12 +279,20 @@ public class EditFrame extends javax.swing.JFrame {
                 .addComponent(codeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(codeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priceLabel)
+                    .addComponent(stateLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(save)
                     .addComponent(delete)
                     .addComponent(leave))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -264,14 +327,23 @@ public class EditFrame extends javax.swing.JFrame {
         System.out.println("Fechando janela");
     }//GEN-LAST:event_formWindowClosing
 
+    private void stateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stateButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stateButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField codeField;
     private javax.swing.JLabel codeLabel;
     private javax.swing.JButton delete;
     private javax.swing.JLabel formLabel;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JButton leave;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField priceField;
+    private javax.swing.JLabel priceLabel;
     private javax.swing.JButton save;
+    private javax.swing.JToggleButton stateButton;
+    private javax.swing.JLabel stateLabel;
     // End of variables declaration//GEN-END:variables
 }
