@@ -58,6 +58,10 @@ public class Product {
     public boolean getState() {
         return state;
     }
+    
+    public String getStateString() {
+        return this.state ? "Ativo" : "Desativado";
+    }
 
     public void setState(boolean state) {
         this.state = state;

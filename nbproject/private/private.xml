@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/product/EditFrame.java</file>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/product/ListTable.java</file>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/jefinho/products/Main.java</file>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/jefinho/products/dao/Connection.java</file>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/jefinho/products/dao/ProductDAO.java</file>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/product/MainFrame.java</file>
+            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/MainFrame.java</file>
+            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/product/ProductMain.java</file>
         </group>
     </open-files>
 </project-private>
