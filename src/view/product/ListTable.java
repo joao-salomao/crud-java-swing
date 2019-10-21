@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import jefinho.products.dao.ProductDAO;
-import jefinho.products.models.Product;
+import dao.ProductDAO;
+import models.Product;
 
 /**
  *
  * @author João Salomão
  */
-public class ListTable extends javax.swing.JFrame {
+public class ListTable extends javax.swing.JInternalFrame {
     private JPanel painelFundo;
     private JPanel painelBotoes;
     private JTable tabela;
@@ -26,7 +26,7 @@ public class ListTable extends javax.swing.JFrame {
     private NewProductButton btInserir;
     private DeleteProductButton btExcluir;
     private EditProductButton btEditar;
-    private DefaultTableModel modelo = new DefaultTableModel();
+    private final DefaultTableModel modelo = new DefaultTableModel();
     private  ArrayList<Product> products;
     
     
@@ -44,6 +44,8 @@ public class ListTable extends javax.swing.JFrame {
         painelBotoes.add(btExcluir);
         painelFundo.add(BorderLayout.SOUTH, painelBotoes);
  
+        this.setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         getContentPane().add(painelFundo);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 320);
@@ -54,8 +56,9 @@ public class ListTable extends javax.swing.JFrame {
         tabela = new JTable(modelo);
         modelo.addColumn("ID");
         modelo.addColumn("CÓDIGO");
-        modelo.addColumn("DESCRIÇÃO");
+        modelo.addColumn("NOME");
         modelo.addColumn("PREÇO");
+        modelo.addColumn("CATEGORIA");
         modelo.addColumn("ESTADO");
         tabela.getColumnModel().getColumn(0)
         .setPreferredWidth(10);
@@ -71,7 +74,8 @@ public class ListTable extends javax.swing.JFrame {
     public void pesquisar(DefaultTableModel modelo) {
         modelo.setNumRows(0);
         this.products.forEach((p) -> {
-            modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription(), p.getPrice(), p.getStateString()});
+            this.modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription(), 
+                p.getPrice(), p.getCategorie().getName() ,p.getStateString()});
         });
     }
     
@@ -84,7 +88,8 @@ public class ListTable extends javax.swing.JFrame {
     }
  
     public void addProduct(Product p) {
-        this.modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription(), p.getPrice(), p.getStateString()});
+        this.modelo.addRow(new Object[]{p.getId(), p.getCode(),p.getDescription()
+                , p.getPrice(), p.getCategorie().getName() ,p.getStateString()});
     }
     
     public void updateRow(Product p, int index) {
@@ -94,8 +99,10 @@ public class ListTable extends javax.swing.JFrame {
         this.modelo.setValueAt(p.getDescription(),index, 2);
         // Update price
         this.modelo.setValueAt(p.getPrice(),index, 3);
+        // Update Categorie
+        this.modelo.setValueAt(p.getCategorie().getName(),index, 4);
         // Update state
-        this.modelo.setValueAt(p.getStateString(),index, 4);
+        this.modelo.setValueAt(p.getStateString(),index, 5);
     }
     
     public void removeProduct(int index) {

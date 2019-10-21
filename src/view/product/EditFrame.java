@@ -5,11 +5,14 @@
  */
 package view.product;
 
+import dao.CategorieDAO;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import jefinho.products.dao.ProductDAO;
-import jefinho.products.models.Product;
+import dao.ProductDAO;
+import javax.swing.JComboBox;
+import models.Categorie;
+import models.Product;
 
 
 /**
@@ -18,6 +21,7 @@ import jefinho.products.models.Product;
  */
 public class EditFrame extends javax.swing.JFrame {
     private ArrayList<Product> products;
+    private ArrayList<Categorie> categories;
     private Product product;
     private final ListTable table;
     private int index;
@@ -31,6 +35,11 @@ public class EditFrame extends javax.swing.JFrame {
         initComponents();
         
         this.setItemListenerToggleButton();
+        this.categories = CategorieDAO.index();
+        
+        this.categories.forEach(c -> {
+            this.categoriesComboBox.addItem(c.getName());
+        });
         
         this.table = table;
         this.products = products;
@@ -54,13 +63,19 @@ public class EditFrame extends javax.swing.JFrame {
         this.setVisible(true);
     }
     
+    private Categorie getSelectedCategorie() {
+        int index = this.categoriesComboBox.getSelectedIndex();
+        return this.categories.get(index);
+    }
+    
     private boolean createProduct() {
         String description = this.nameField.getText();
         String code = this.codeField.getText();
         double price = Double.parseDouble(this.priceField.getText());
         boolean state = this.stateButton.getText().equalsIgnoreCase("Ativo");
+        Categorie categorie = this.getSelectedCategorie();
         
-        Product p = new Product(description, code, price, state);
+        Product p = new Product(description, code, price, state, categorie);
 
         boolean result = ProductDAO.add(p);
 
@@ -79,14 +94,18 @@ public class EditFrame extends javax.swing.JFrame {
         String code = this.codeField.getText();
         double price = Double.parseDouble(this.priceField.getText());
         boolean state = this.stateButton.getText().equalsIgnoreCase("Ativo");
+        Categorie categorie = this.getSelectedCategorie();
         
         this.product.setCode(code);
         this.product.setDescription(description);
         this.product.setPrice(price);
         this.product.setState(state);
+        this.product.setCategorie(categorie);
         
         boolean result = ProductDAO.update(product);
-        
+        if (result) {
+            this.table.updateRow(this.product, this.index);
+        }
         return result;
     }
     
@@ -94,14 +113,15 @@ public class EditFrame extends javax.swing.JFrame {
         boolean nameIsEmpty = this.nameField.getText().isEmpty();
         boolean codeIsEmpty = this.codeField.getText().isEmpty();
         
+        String message;
         if (nameIsEmpty && codeIsEmpty) {
-            String message = "Os campos NOME e CÓDIGO são obrigatórios";
+            message = "Os campos NOME e CÓDIGO são obrigatórios";
             JOptionPane.showMessageDialog (this, message);
         } else if (nameIsEmpty) {
-            String message = "Os campo NOME é obrigatório";
+            message = "Os campo NOME é obrigatório";
             JOptionPane.showMessageDialog (this, message);
         } else if (codeIsEmpty) {
-            String message = "Os campo CÓDIGO é obrigatório";
+            message = "Os campo CÓDIGO é obrigatório";
             JOptionPane.showMessageDialog (this, message);
         }
         return !nameIsEmpty && !codeIsEmpty;
@@ -122,7 +142,6 @@ public class EditFrame extends javax.swing.JFrame {
             }
         } else {
             result = this.updateProduct();
-            this.table.updateRow(this.product, this.index);
             successMessage = "O produto "+this.product.getDescription()+" foi atualizado com sucesso";
         }
         
@@ -144,7 +163,6 @@ public class EditFrame extends javax.swing.JFrame {
         });
     }
     
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -167,8 +185,8 @@ public class EditFrame extends javax.swing.JFrame {
         priceLabel = new javax.swing.JLabel();
         stateButton = new javax.swing.JToggleButton();
         stateLabel = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        codeLabel1 = new javax.swing.JLabel();
+        categoriesLabel = new javax.swing.JLabel();
+        categoriesComboBox = new javax.swing.JComboBox<>();
 
         jTextField2.setText("jTextField2");
 
@@ -234,10 +252,10 @@ public class EditFrame extends javax.swing.JFrame {
         stateLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         stateLabel.setText("Estado");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        categoriesLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        categoriesLabel.setText("Categoria");
 
-        codeLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        codeLabel1.setText("Categoria");
+        categoriesComboBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -258,16 +276,15 @@ public class EditFrame extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(leave)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(delete)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addComponent(save))
                                         .addComponent(stateLabel)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(stateButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addComponent(codeLabel1))))
+                                        .addComponent(categoriesLabel)
+                                        .addComponent(stateButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(categoriesComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,11 +307,11 @@ public class EditFrame extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(codeLabel)
-                    .addComponent(codeLabel1))
+                    .addComponent(categoriesLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(codeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(categoriesComboBox)
+                    .addComponent(codeField, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(priceLabel)
@@ -303,7 +320,7 @@ public class EditFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(stateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(save)
                     .addComponent(delete)
@@ -348,12 +365,12 @@ public class EditFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_stateButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> categoriesComboBox;
+    private javax.swing.JLabel categoriesLabel;
     private javax.swing.JTextField codeField;
     private javax.swing.JLabel codeLabel;
-    private javax.swing.JLabel codeLabel1;
     private javax.swing.JButton delete;
     private javax.swing.JLabel formLabel;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JButton leave;
     private javax.swing.JTextField nameField;

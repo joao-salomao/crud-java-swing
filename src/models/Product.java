@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jefinho.products.models;
+package models;
 
 /**
  *
@@ -15,6 +15,16 @@ public class Product {
     private String description;
     private double price;
     private boolean state;
+    private Categorie categorie;
+    
+    public Product(int id, String code, String description, double price, boolean state, Categorie categorie) {
+        this.id = id;
+        this.code = code;
+        this.description = description;
+        this.price = price;
+        this.state = state;
+        this.categorie = categorie;
+    }
     
     public Product(int id, String code, String description, double price, boolean state) {
         this.id = id;
@@ -24,8 +34,15 @@ public class Product {
         this.state = state;
     }
     
+    public Product(String code, String description, double price, boolean state, Categorie categorie) {
+        this.code = code;
+        this.description = description;
+        this.price = price;
+        this.state = state;
+        this.categorie = categorie;
+    }
+    
     public Product(String code, String description, double price, boolean state) {
-        this.id = id;
         this.code = code;
         this.description = description;
         this.price = price;
@@ -86,5 +103,12 @@ public class Product {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
+    }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jefinho.products.dao;
+package dao;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class Connection {
     private static java.sql.Connection connection;
     private static final String serverName = "localhost";
-    private static final String mydatabase = "aula0210";
+    private static final String mydatabase = "aula0210_new";
     private static final String username = "mysql";
     private static final String password = "root";
     private static final String url = "jdbc:mysql://" + serverName+ "/" + mydatabase+"?useTimezone=true&serverTimezone=UTC";

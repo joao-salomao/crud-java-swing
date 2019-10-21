@@ -8,8 +8,8 @@ package view.product;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import jefinho.products.dao.ProductDAO;
-import jefinho.products.models.Product;
+import dao.ProductDAO;
+import models.Product;
 
 /**
  *

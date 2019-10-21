@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jefinho.products;
+package main;
 
-import view.product.ListTable;
+import view.MainFrame;
 
 /**
  *
@@ -17,6 +17,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new ListTable();
+        try {
+            new MainFrame().setVisible(true);
+        } catch(Exception e) {
+            System.out.println(e);
+        }
     }
 }
+
+
+
