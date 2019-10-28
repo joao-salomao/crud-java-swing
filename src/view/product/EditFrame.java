@@ -10,7 +10,6 @@ import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import dao.ProductDAO;
-import javax.swing.JComboBox;
 import models.Categorie;
 import models.Product;
 

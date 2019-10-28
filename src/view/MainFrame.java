@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.awt.Component;
 import view.categorie.EditCategorie;
 import view.product.ListTable;
 
@@ -13,14 +14,16 @@ import view.product.ListTable;
  * @author João Salomão
  */
 public class MainFrame extends javax.swing.JFrame {
-    ListTable tableProducts;
+    Component tableProducts;
+    Component editCategorie;
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        tableProducts = new ListTable();
-        this.getContentPane().add(tableProducts);
+        tableProducts = this.getContentPane().add(new ListTable());
+        editCategorie = this.getContentPane().add(new EditCategorie());
+        editCategorie.setVisible(false);
     }
 
     /**
@@ -78,12 +81,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        this.editCategorie.setVisible(false);
+        this.tableProducts.setVisible(true);
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        new EditCategorie();
+        this.tableProducts.setVisible(false);
+        this.editCategorie.setVisible(true);
+        
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
