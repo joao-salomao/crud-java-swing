@@ -43,7 +43,7 @@ public class CategorieDAO {
     
     public static boolean update(Categorie c) {
         try {
-            String sql = "UPDATE products SET name = ? WHERE id = ?";
+            String sql = "UPDATE categories SET name = ? WHERE id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             
             st.setString(1, c.getName());

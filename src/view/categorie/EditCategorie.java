@@ -13,8 +13,10 @@ import models.Categorie;
  *
  * @author João Salomão
  */
-public class EditCategorie extends javax.swing.JInternalFrame {
+public class EditCategorie extends javax.swing.JFrame {
     Categorie categorie;
+    CategorieTable table;
+    boolean isEdit;
     /**
      * Creates new form EditCategorie
      */
@@ -23,9 +25,12 @@ public class EditCategorie extends javax.swing.JInternalFrame {
         this.setVisible(true);
     }
     
-    public EditCategorie(Categorie c) {
-        this.categorie = c;
+    public EditCategorie(CategorieTable table, Categorie c) {
         this.initComponents();
+        this.categorie = c;
+        this.table = table;
+        this.jTextField1.setText(c.getName());
+        this.isEdit = true;
         this.setVisible(true);
     }
 
@@ -111,6 +116,7 @@ public class EditCategorie extends javax.swing.JInternalFrame {
             if (this.categorie == null) {
                 result = this.createCategorie();
                 if (result) {
+                    this.table.addRow(this.categorie);
                     message = "A categoria "+name+" foi cadastrada com sucesso.";
                 } else {
                     message = "Não foi possível cadastrar a categoria "+name;
@@ -119,6 +125,7 @@ public class EditCategorie extends javax.swing.JInternalFrame {
                 result = this.updateCategorie();
                 if (result) {
                     message = "A categoria "+name+" foi atualizada com sucesso";
+                    this.table.updateRow(categorie);
                 } else {
                     message = "Não foi possível atualizar a categoria "+name+". Tente novamente.";
                 }
@@ -138,7 +145,7 @@ public class EditCategorie extends javax.swing.JInternalFrame {
     private boolean updateCategorie() {
         String name = this.jTextField1.getText();
         this.categorie.setName(name);
-        return CategorieDAO.add(this.categorie);
+        return CategorieDAO.update(this.categorie);
     }
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
