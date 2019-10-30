@@ -29,8 +29,9 @@ public class CategorieTable extends JInternalFrame {
     private ArrayList<Categorie> categories;
     private DefaultTableModel modelo = new DefaultTableModel();
  
-    public CategorieTable() {
+    public CategorieTable(ArrayList<Categorie> categories) {
         super("Categorias");
+        this.categories = categories;
         criaJTable();
         criaJanela();
     }
@@ -75,9 +76,7 @@ public class CategorieTable extends JInternalFrame {
  
     public void pesquisar(DefaultTableModel modelo) {
         modelo.setNumRows(0);
-        this.categories = CategorieDAO.index();
- 
-        for (Categorie c : categories) {
+        for (Categorie c : this.categories) {
             modelo.addRow(new Object[]{c.getId(), c.getName()});
         }
     }
@@ -95,14 +94,14 @@ public class CategorieTable extends JInternalFrame {
     
     public void removeRow(Categorie c) {
         int index = this.categories.indexOf(c);
-        
+        this.categories.remove(c);
+        this.modelo.removeRow(index);
     }
  
     private class BtInserirListener implements ActionListener {
  
         public void actionPerformed(ActionEvent e) {
-            InserirContato ic = new InserirContato(modelo);
-            ic.setVisible(true);
+            new EditCategorie(t);
         }
     }
  
@@ -135,7 +134,8 @@ public class CategorieTable extends JInternalFrame {
                     modelo.removeRow(linhaSelecionada);
                     JOptionPane.showMessageDialog(null, "Categorie deletada com sucesso");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Algo deu errado, tente novamente");
+                    String message = message = "Essa categoria está vinculada a algum produto. Primeiro desvincule essa categoria de todos os produtos para poder apagar.";
+                    JOptionPane.showMessageDialog(null, message);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, 

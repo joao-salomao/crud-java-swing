@@ -59,7 +59,7 @@ public class CategorieDAO {
     
     public static boolean delete(Categorie c) {
         try {
-            String sql = "DELETE FROM products WHERE id = ?";
+            String sql = "DELETE FROM categories WHERE id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             
             st.setInt(1, c.getId());

@@ -112,9 +112,9 @@ public class ListTable extends javax.swing.JInternalFrame {
     /**
      * Creates new form ListTable
      */
-    public ListTable() {
+    public ListTable(ArrayList<Product> products) {
         //initComponents();
-        this.products = ProductDAO.index();
+        this.products = products;
         this.criaJTable();
         this.criaJanela();
     }

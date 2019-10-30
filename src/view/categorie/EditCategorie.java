@@ -16,7 +16,6 @@ import models.Categorie;
 public class EditCategorie extends javax.swing.JFrame {
     Categorie categorie;
     CategorieTable table;
-    boolean isEdit;
     /**
      * Creates new form EditCategorie
      */
@@ -27,10 +26,18 @@ public class EditCategorie extends javax.swing.JFrame {
     
     public EditCategorie(CategorieTable table, Categorie c) {
         this.initComponents();
+        this.formTitle.setText("Editando Categoria");
         this.categorie = c;
         this.table = table;
         this.jTextField1.setText(c.getName());
-        this.isEdit = true;
+        this.setVisible(true);
+    }
+    
+        public EditCategorie(CategorieTable table) {
+        this.initComponents();
+        this.formTitle.setText("Criando Categoria");
+        this.table = table;
+        this.deleteButton.setVisible(false);
         this.setVisible(true);
     }
 
@@ -46,10 +53,9 @@ public class EditCategorie extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-
-        setTitle("Criar Categoria");
+        formTitle = new javax.swing.JLabel();
 
         jLabel1.setText("Nome");
 
@@ -60,7 +66,12 @@ public class EditCategorie extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Excluir");
+        deleteButton.setText("Excluir");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Sair");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -69,37 +80,44 @@ public class EditCategorie extends javax.swing.JFrame {
             }
         });
 
+        formTitle.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        formTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        formTitle.setText("asdakdsalkdaslsdaklsla4");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(formTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 431, Short.MAX_VALUE))
-                    .addComponent(jTextField1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 258, Short.MAX_VALUE)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addContainerGap()
+                .addComponent(formTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(deleteButton)
                     .addComponent(jButton3))
                 .addContainerGap())
         );
@@ -111,31 +129,39 @@ public class EditCategorie extends javax.swing.JFrame {
         // TODO add your handling code here:
         String name = this.jTextField1.getText();
         String message;
-        if (!name.isEmpty()) {
-            boolean result;
-            if (this.categorie == null) {
-                result = this.createCategorie();
-                if (result) {
-                    this.table.addRow(this.categorie);
-                    message = "A categoria "+name+" foi cadastrada com sucesso.";
-                } else {
-                    message = "Não foi possível cadastrar a categoria "+name;
-                }
+        
+        if (this.validateFields()) {
+            message = "O campo nome é obrigatório";
+            JOptionPane.showMessageDialog (this, message);
+            return;
+        }
+        
+        boolean result;
+        if (this.categorie == null) {
+            result = this.createCategorie();
+            if (result) {
+                this.table.addRow(this.categorie);
+                message = "A categoria "+name+" foi cadastrada com sucesso.";
+                this.deleteButton.setVisible(true);
             } else {
-                result = this.updateCategorie();
-                if (result) {
-                    message = "A categoria "+name+" foi atualizada com sucesso";
-                    this.table.updateRow(categorie);
-                } else {
-                    message = "Não foi possível atualizar a categoria "+name+". Tente novamente.";
-                }
+                message = "Não foi possível cadastrar a categoria "+name;
             }
         } else {
-            message = "O campo nome é obrigatório";
+            result = this.updateCategorie();
+            if (result) {
+                message = "A categoria "+name+" foi atualizada com sucesso";
+                this.table.updateRow(categorie);
+            } else {
+                message = "Não foi possível atualizar a categoria "+name+". Tente novamente.";
+            }
         }
         JOptionPane.showMessageDialog (this, message);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private boolean validateFields() {
+        return this.jTextField1.getText().isEmpty();
+    }
+    
     private boolean createCategorie() {
         String name = this.jTextField1.getText();
         this.categorie = new Categorie(name);
@@ -152,9 +178,25 @@ public class EditCategorie extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        boolean result = CategorieDAO.delete(this.categorie);
+        String message;
+        if (result) {
+            this.table.removeRow(this.categorie);
+            message = "A categoria foi deletada com sucesso";
+            JOptionPane.showMessageDialog (this, message);
+            this.dispose();
+        } else {
+            message = "Essa categoria está vinculada a algum produto. Primeiro desvincule essa categoria de todos os produtos para poder apagar.";
+            JOptionPane.showMessageDialog (this, message);
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JLabel formTitle;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField jTextField1;

@@ -5,9 +5,13 @@
  */
 package view;
 
+import dao.CategorieDAO;
+import dao.ProductDAO;
 import java.awt.Component;
+import java.util.ArrayList;
+import models.Categorie;
+import models.Product;
 import view.categorie.CategorieTable;
-import view.categorie.EditCategorie;
 import view.product.ListTable;
 
 /**
@@ -15,16 +19,24 @@ import view.product.ListTable;
  * @author João Salomão
  */
 public class MainFrame extends javax.swing.JFrame {
+    // Components
     Component tableProducts;
     Component editCategorie;
     Component categories;
+    // Items
+    ArrayList<Categorie> categoriesList;
+    ArrayList<Product> productsList;
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        tableProducts = this.getContentPane().add(new ListTable());
-        categories = this.getContentPane().add(new CategorieTable());
+        this.setLocationRelativeTo(null);
+        categoriesList = CategorieDAO.index();
+        productsList = ProductDAO.index();
+        
+        tableProducts = this.getContentPane().add(new ListTable(productsList));
+        categories = this.getContentPane().add(new CategorieTable(categoriesList));
         categories.setVisible(false);
     }
 
