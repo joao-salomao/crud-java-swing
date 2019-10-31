@@ -4,12 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/product/EditFrame.java</file>
+            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/categorie/CategorieTable.java</file>
             <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/product/ListTable.java</file>
             <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/models/Product.java</file>
             <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/MainFrame.java</file>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/models/Categorie.java</file>
+            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/categorie/EditCategorie.java</file>
             <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/dao/CategorieDAO.java</file>
-            <file>file:/C:/Users/João%20Salomão/Desktop/product-crud-java/src/view/product/NewProductButton.java</file>
         </group>
     </open-files>
 </project-private>

@@ -17,14 +17,13 @@ import models.Categorie;
  * @author João Salomão
  */
 public class CategorieDAO {
-    static java.sql.Connection con = Connection.getConexao();
     
     public static boolean add(Categorie c) {
         try {
             String sql = "INSERT INTO categories(name) VALUES(?)";
             String returnColunm[] = {"id"};
             
-            PreparedStatement st = con.prepareStatement(sql, returnColunm);
+            PreparedStatement st = Connection.getConexao().prepareStatement(sql, returnColunm);
             st.setString(1, c.getName());
             
             st.executeUpdate();
@@ -35,7 +34,7 @@ public class CategorieDAO {
            
             c.setId(rs.getInt(1));
             return true;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return false;
@@ -44,14 +43,14 @@ public class CategorieDAO {
     public static boolean update(Categorie c) {
         try {
             String sql = "UPDATE categories SET name = ? WHERE id = ?";
-            PreparedStatement st = con.prepareStatement(sql);
+            PreparedStatement st = Connection.getConexao().prepareStatement(sql);
             
             st.setString(1, c.getName());
             st.setInt(2, c.getId());
             
             st.executeUpdate();
             return true;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return false;
@@ -60,13 +59,13 @@ public class CategorieDAO {
     public static boolean delete(Categorie c) {
         try {
             String sql = "DELETE FROM categories WHERE id = ?";
-            PreparedStatement st = con.prepareStatement(sql);
+            PreparedStatement st = Connection.getConexao().prepareStatement(sql);
             
             st.setInt(1, c.getId());
             
             st.executeUpdate();
             return true;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return false;
@@ -98,7 +97,7 @@ public class CategorieDAO {
         
         try {
             String sql = "SELECT * FROM categories";
-            Statement st = con.createStatement();
+            Statement st = Connection.getConexao().createStatement();
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()) {
@@ -112,7 +111,7 @@ public class CategorieDAO {
             }   
             
             return categories;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return null;

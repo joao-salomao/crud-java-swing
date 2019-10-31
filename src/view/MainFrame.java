@@ -6,9 +6,13 @@
 package view;
 
 import dao.CategorieDAO;
+import dao.Connection;
 import dao.ProductDAO;
 import java.awt.Component;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import models.Categorie;
 import models.Product;
 import view.categorie.CategorieTable;
@@ -19,6 +23,7 @@ import view.product.ListTable;
  * @author João Salomão
  */
 public class MainFrame extends javax.swing.JFrame {
+
     // Components
     Component tableProducts;
     Component editCategorie;
@@ -26,18 +31,27 @@ public class MainFrame extends javax.swing.JFrame {
     // Items
     ArrayList<Categorie> categoriesList;
     ArrayList<Product> productsList;
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        categoriesList = CategorieDAO.index();
-        productsList = ProductDAO.index();
-        
-        tableProducts = this.getContentPane().add(new ListTable(productsList));
-        categories = this.getContentPane().add(new CategorieTable(categoriesList));
-        categories.setVisible(false);
+        try {
+            initComponents();
+            this.setLocationRelativeTo(null);
+            Connection.getConnection();
+            categoriesList = CategorieDAO.index();
+            productsList = ProductDAO.index();
+            tableProducts = this.getContentPane().add(new ListTable(productsList));
+            categories = this.getContentPane().add(new CategorieTable(categoriesList));
+            categories.setVisible(false);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e, "Erro" ,ERROR_MESSAGE);
+            System.exit(e.getErrorCode());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e, "Erro" ,ERROR_MESSAGE);
+            System.exit(1);
+        }
     }
 
     /**
@@ -97,15 +111,15 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.categories.setVisible(false);
         this.tableProducts.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         this.tableProducts.setVisible(false);
         this.categories.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**

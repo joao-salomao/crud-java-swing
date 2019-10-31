@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b30efa9-e3ee-4378-b6e4-e121a13850f4" name="Default Changelist" comment="" />
+    <list default="true" id="4b30efa9-e3ee-4378-b6e4-e121a13850f4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/build/classes/view/product/ListTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/view/product/ListTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/product/ListTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/product/ListTable.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +52,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

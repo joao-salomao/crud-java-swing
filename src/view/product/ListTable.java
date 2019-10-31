@@ -44,7 +44,6 @@ public class ListTable extends javax.swing.JInternalFrame {
         painelBotoes.add(btExcluir);
         painelFundo.add(BorderLayout.SOUTH, painelBotoes);
  
-        this.setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         getContentPane().add(painelFundo);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

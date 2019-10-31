@@ -18,14 +18,12 @@ import models.Product;
  * @author João Salomão
  */
 public class ProductDAO {
-    static java.sql.Connection con = Connection.getConexao();
-
     public static boolean add(Product p) {
         try {
             String sql = "INSERT INTO products(code, description, price, state, id_categorie) VALUES(?, ?, ?, ?, ?)";
             String returnColunm[] = {"id"};
             
-            PreparedStatement st = con.prepareStatement(sql, returnColunm);
+            PreparedStatement st = Connection.getConexao().prepareStatement(sql, returnColunm);
             st.setString(1, p.getCode());
             st.setString(2, p.getDescription());
             st.setDouble(3, p.getPrice());
@@ -39,7 +37,7 @@ public class ProductDAO {
            
             p.setId(rs.getInt(1));
             return true;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return false;
@@ -48,7 +46,7 @@ public class ProductDAO {
     public static boolean update(Product p) {
         try {
             String sql = "UPDATE products SET code = ?, description = ?, id_categorie = ? WHERE id = ?";
-            PreparedStatement st = con.prepareStatement(sql);
+            PreparedStatement st = Connection.getConexao().prepareStatement(sql);
             
             st.setString(1, p.getCode());
             st.setString(2, p.getDescription());
@@ -57,7 +55,7 @@ public class ProductDAO {
             
             st.executeUpdate();
             return true;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return false;
@@ -66,13 +64,13 @@ public class ProductDAO {
     public static boolean delete(Product p) {
         try {
             String sql = "DELETE FROM products WHERE id = ?";
-            PreparedStatement st = con.prepareStatement(sql);
+            PreparedStatement st = Connection.getConexao().prepareStatement(sql);
             
             st.setInt(1, p.getId());
             
             st.executeUpdate();
             return true;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return false;
@@ -81,7 +79,7 @@ public class ProductDAO {
     public static Product show(int id) {
         try {
             String sql = "SELECT * FROM products WHERE id = "+id;
-            Statement st = con.createStatement();
+            Statement st = Connection.getConexao().createStatement();
             ResultSet rs = st.executeQuery(sql);
             
             rs.next();
@@ -93,7 +91,7 @@ public class ProductDAO {
             
             return new Product(id, code, description, price, state);
   
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         return null;
@@ -106,7 +104,7 @@ public class ProductDAO {
             String sql = "SELECT * FROM products p "
                     + "inner join categories c "
                     + "on p.id_categorie = c.id";
-            Statement st = con.createStatement();
+            Statement st = Connection.getConexao().createStatement();
             ResultSet rs = st.executeQuery(sql);
            
             while(rs.next()) {
@@ -128,7 +126,7 @@ public class ProductDAO {
             }   
             
             return products;
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
         

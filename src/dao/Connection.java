@@ -20,20 +20,16 @@ public class Connection {
     private static final String password = "root";
     private static final String url = "jdbc:mysql://" + serverName+ "/" + mydatabase+"?useTimezone=true&serverTimezone=UTC";
     
-    public static java.sql.Connection getConnection(){
+    public static java.sql.Connection getConnection() throws Exception {
         if ( connection == null){
             try {
                 String driverName = "com.mysql.cj.jdbc.Driver";
                 Class.forName(driverName);
                 connection = DriverManager.getConnection(url,username, password);
                 
-            } catch(ClassNotFoundException e) {
-                
+            } catch(Exception e) {
                 System.out.println(e);
-                System.out.println("A classe não foi encontrada");
-                
-            }catch (SQLException e){
-                System.out.println(e);
+                throw e;
             }
         }
         return connection;
@@ -47,7 +43,7 @@ public class Connection {
         }
     }
 
-    static java.sql.Connection getConexao() {
+    static java.sql.Connection getConexao() throws Exception {
         getConnection();
         return connection;
     }
