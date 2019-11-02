@@ -40,7 +40,7 @@ public class MainFrame extends javax.swing.JFrame {
             initComponents();
             this.setLocationRelativeTo(null);
             Connection.getConnection();
-            
+                        
             // Get data from database
             categoriesList = CategorieDAO.index();
             productsList = ProductDAO.index();

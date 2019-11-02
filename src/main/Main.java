@@ -5,6 +5,7 @@
  */
 package main;
 
+import javax.swing.UnsupportedLookAndFeelException;
 import view.MainFrame;
 
 /**
@@ -18,8 +19,15 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
+            // Set look-and-feel
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
             new MainFrame().setVisible(true);
-        } catch(Exception e) {
+        } catch(ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
             System.out.println(e);
         }
     }

@@ -2,12 +2,9 @@ package view.categorie;
 
 import dao.CategorieDAO;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,14 +14,11 @@ import models.Categorie;
 /**
  * @author João Salomão
  */
-public final class CategorieTable extends JInternalFrame {
-    private CategorieTable  t = this; 
+public final class CategorieTable extends JInternalFrame { 
     private JPanel painelFundo;
     private JPanel painelBotoes;
     private JTable tabela;
     private JScrollPane barraRolagem;
-    private JButton btInserir;
-    private JButton btEditar;
     private final ArrayList<Categorie> categories;
     private final DefaultTableModel modelo = new DefaultTableModel();
  
@@ -37,8 +31,6 @@ public final class CategorieTable extends JInternalFrame {
  
     public void createFrame() {
         this.setName("Categorias");
-        btInserir = new JButton("Inserir");
-        btEditar = new JButton("Editar");
         painelBotoes = new JPanel();
         barraRolagem = new JScrollPane(tabela);
         painelFundo = new JPanel();
