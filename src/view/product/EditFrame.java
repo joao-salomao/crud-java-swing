@@ -59,6 +59,7 @@ public class EditFrame extends javax.swing.JFrame {
             this.delete.setVisible(false);
             this.formLabel.setText("Cadastrar Novo Produto");
         }
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     

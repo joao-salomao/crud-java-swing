@@ -21,23 +21,29 @@ public class EditCategorie extends javax.swing.JFrame {
      */
     public EditCategorie() {
         this.initComponents();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     
+    
+    // Constructor to edit categorie
     public EditCategorie(CategorieTable table, Categorie c) {
         this.initComponents();
         this.formTitle.setText("Editando Categoria");
         this.categorie = c;
         this.table = table;
         this.jTextField1.setText(c.getName());
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     
-        public EditCategorie(CategorieTable table) {
+    // Constructor to create categorie
+    public EditCategorie(CategorieTable table) {
         this.initComponents();
         this.formTitle.setText("Criando Categoria");
         this.table = table;
         this.deleteButton.setVisible(false);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 

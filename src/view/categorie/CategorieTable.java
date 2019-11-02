@@ -17,68 +17,69 @@ import models.Categorie;
 /**
  * @author João Salomão
  */
-public class CategorieTable extends JInternalFrame {
+public final class CategorieTable extends JInternalFrame {
     private CategorieTable  t = this; 
     private JPanel painelFundo;
     private JPanel painelBotoes;
     private JTable tabela;
     private JScrollPane barraRolagem;
     private JButton btInserir;
-    private JButton btExcluir;
     private JButton btEditar;
-    private ArrayList<Categorie> categories;
-    private DefaultTableModel modelo = new DefaultTableModel();
+    private final ArrayList<Categorie> categories;
+    private final DefaultTableModel modelo = new DefaultTableModel();
  
     public CategorieTable(ArrayList<Categorie> categories) {
         super("Categorias");
         this.categories = categories;
-        criaJTable();
-        criaJanela();
+        createTable();
+        createFrame();
     }
  
-    public void criaJanela() {
+    public void createFrame() {
+        this.setName("Categorias");
         btInserir = new JButton("Inserir");
-        btExcluir = new JButton("Excluir");
         btEditar = new JButton("Editar");
         painelBotoes = new JPanel();
         barraRolagem = new JScrollPane(tabela);
         painelFundo = new JPanel();
         painelFundo.setLayout(new BorderLayout());
-        painelFundo.add(BorderLayout.CENTER, barraRolagem);
-        painelBotoes.add(btInserir);
-        painelBotoes.add(btEditar);
-        painelBotoes.add(btExcluir);
+        painelFundo.add(BorderLayout.CENTER, barraRolagem);        
+        painelBotoes.add(new DeleteCategorieButton(this));
+        painelBotoes.add(new EditCategorieButton(this));
+        painelBotoes.add(new NewCategorieButton(this));
         painelFundo.add(BorderLayout.SOUTH, painelBotoes);
  
         getContentPane().add(painelFundo);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 320);
         setVisible(true);
-        btInserir.addActionListener(new BtInserirListener());
-        btEditar.addActionListener(new BtEditarListener());
-        btExcluir.addActionListener(new BtExcluirListener());
     }
  
-    private void criaJTable() {
+    private void createTable() {
         tabela = new JTable(modelo);
         modelo.addColumn("ID");
         modelo.addColumn("NAME");
-        tabela.getColumnModel().getColumn(0)
-        .setPreferredWidth(10);
-        tabela.getColumnModel().getColumn(1)
-        .setPreferredWidth(120);
-        tabela.getColumnModel().getColumn(1)
-        .setPreferredWidth(80);
-        tabela.getColumnModel().getColumn(1)
-        .setPreferredWidth(120);
-        pesquisar(modelo);
+        
+        tabela.getColumnModel()
+            .getColumn(0)
+            .setMaxWidth(60);
+        tabela.getColumnModel()
+            .getColumn(1)
+            .setPreferredWidth(120);
+        tabela.getColumnModel()
+            .getColumn(1)
+            .setPreferredWidth(80);
+        tabela.getColumnModel()
+            .getColumn(1)
+            .setPreferredWidth(120);
+        this.addRows(modelo);
     }
  
-    public void pesquisar(DefaultTableModel modelo) {
+    public void addRows(DefaultTableModel modelo) {
         modelo.setNumRows(0);
-        for (Categorie c : this.categories) {
+        this.categories.forEach((c) -> {
             modelo.addRow(new Object[]{c.getId(), c.getName()});
-        }
+        });
     }
     
     public void addRow(Categorie c) {
@@ -97,50 +98,30 @@ public class CategorieTable extends JInternalFrame {
         this.categories.remove(c);
         this.modelo.removeRow(index);
     }
- 
-    private class BtInserirListener implements ActionListener {
- 
-        public void actionPerformed(ActionEvent e) {
-            new EditCategorie(t);
+    
+    
+    public int removeRow() {
+        int index = this.tabela.getSelectedRow();
+        
+        if (index < 0) {
+            return -1;
         }
+        
+        Categorie c = this.categories.get(index);
+        boolean result = CategorieDAO.delete(c);
+        
+        if (!result) {
+            return 0;
+        }
+        
+        this.categories.remove(index);
+        this.modelo.removeRow(index);
+        
+        return 1;
     }
- 
-    private class BtEditarListener implements ActionListener {
- 
-        public void actionPerformed(ActionEvent e) {
-            int linhaSelecionada = -1;
-            linhaSelecionada = tabela.getSelectedRow();
-            if (linhaSelecionada >= 0) {
-                Categorie c = categories.get(linhaSelecionada);
-                new EditCategorie(t, c);
-                System.out.println("aqiuiiiiii");
-            } else {
-                JOptionPane.showMessageDialog(null, 
-                "É necesário selecionar uma linha.");
-            }
-        }
-    }
- 
-    private class BtExcluirListener implements ActionListener {
- 
-        public void actionPerformed(ActionEvent e) {
-            int linhaSelecionada = -1;
-            linhaSelecionada = tabela.getSelectedRow();
-            if (linhaSelecionada >= 0) {
-                Categorie c = categories.get(linhaSelecionada);
-                boolean result = CategorieDAO.delete(c);
-                if (result) {
-                    categories.remove(linhaSelecionada);
-                    modelo.removeRow(linhaSelecionada);
-                    JOptionPane.showMessageDialog(null, "Categorie deletada com sucesso");
-                } else {
-                    String message = message = "Essa categoria está vinculada a algum produto. Primeiro desvincule essa categoria de todos os produtos para poder apagar.";
-                    JOptionPane.showMessageDialog(null, message);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, 
-                "É necesário selecionar uma linha.");
-            }
-        }
+    
+    public Categorie getSelectedCategorie() {
+        int index = this.tabela.getSelectedRow();
+        return this.categories.get(index);
     }
 }

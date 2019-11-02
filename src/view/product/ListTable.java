@@ -31,6 +31,7 @@ public class ListTable extends javax.swing.JInternalFrame {
     
     
     public void criaJanela() {
+        this.setName("Produtos");
         btInserir = new NewProductButton(this);
         btExcluir = new DeleteProductButton(this);
         btEditar = new EditProductButton(this);
