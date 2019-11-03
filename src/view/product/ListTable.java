@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import dao.ProductDAO;
 import models.Product;
 
 /**
@@ -23,26 +22,20 @@ public class ListTable extends javax.swing.JInternalFrame {
     private JPanel painelBotoes;
     private JTable tabela;
     private JScrollPane barraRolagem;
-    private NewProductButton btInserir;
-    private DeleteProductButton btExcluir;
-    private EditProductButton btEditar;
     private final DefaultTableModel modelo = new DefaultTableModel();
-    private  ArrayList<Product> products;
+    private final  ArrayList<Product> products;
     
     
     public void criaJanela() {
         this.setName("Produtos");
-        btInserir = new NewProductButton(this);
-        btExcluir = new DeleteProductButton(this);
-        btEditar = new EditProductButton(this);
         painelBotoes = new JPanel();
         barraRolagem = new JScrollPane(tabela);
         painelFundo = new JPanel();
         painelFundo.setLayout(new BorderLayout());
         painelFundo.add(BorderLayout.CENTER, barraRolagem);
-        painelBotoes.add(btInserir);
-        painelBotoes.add(btEditar);
-        painelBotoes.add(btExcluir);
+        painelBotoes.add(new DeleteProductButton(this));
+        painelBotoes.add(new EditProductButton(this));
+        painelBotoes.add(new NewProductButton(this));
         painelFundo.add(BorderLayout.SOUTH, painelBotoes);
  
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);

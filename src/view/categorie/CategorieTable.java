@@ -23,7 +23,6 @@ public final class CategorieTable extends JInternalFrame {
     private final DefaultTableModel modelo = new DefaultTableModel();
  
     public CategorieTable(ArrayList<Categorie> categories) {
-        super("Categorias");
         this.categories = categories;
         createTable();
         createFrame();

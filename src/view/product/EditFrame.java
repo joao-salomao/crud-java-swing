@@ -75,7 +75,7 @@ public class EditFrame extends javax.swing.JFrame {
         boolean state = this.stateButton.getText().equalsIgnoreCase("Ativo");
         Categorie categorie = this.getSelectedCategorie();
         
-        Product p = new Product(description, code, price, state, categorie);
+        Product p = new Product(code, description, price, state, categorie);
 
         boolean result = ProductDAO.add(p);
 
